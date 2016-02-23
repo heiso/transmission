@@ -4,6 +4,7 @@ MAINTAINER David Personette <dperson@dperson.com>
 # Install transmission
 RUN export DEBIAN_FRONTEND='noninteractive' && \
     apt-get update -qq && \
+    apt-get install -y wget && \
     apt-get install -qqy --no-install-recommends transmission-daemon curl \
                 $(apt-get -s dist-upgrade|awk '/^Inst.*ecurity/ {print $2}') &&\
     apt-get clean && \
@@ -27,7 +28,7 @@ RUN export DEBIAN_FRONTEND='noninteractive' && \
     rm -rf /var/lib/apt/lists/* /tmp/*
 COPY transmission.sh /usr/bin/
 
-VOLUME ["/var/lib/transmission-daemon"]
+VOLUME ["/var/lib/transmission-daemon/downloads", "/var/lib/transmission-daemon/incomplete", "/var/lib/transmission-daemon/info"]
 
 EXPOSE 9091 51413/tcp 51413/udp
 
